@@ -8,24 +8,30 @@
  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body style="margin: 0px">
- <input type="file" id="pdf-upload" value="Upload">
+ <label for="file-picker"> Choose a PDF file:</label>
+ <input type="file" id="file-picker" accept="application/pdf">
  <div id="adobe-dc-view"></div>
  <script src=https://documentcloud.adobe.com/view-sdk/main.js"></script>
  <script type="text/javascript">
-    document.querySelector("#pdf-upload").addEventListener("change", function(e){
-     var canvasElement = document.querySelector("canvas")
-     var file = e.target.files[0]
-     if(file.type != "application/pdf"){
-      console.error(file.name, "is not a pdf file.")
-      return
-     }
-     document.addEventListener("adobe_dc_view_sdk.ready", function()
-     {
-         <!-- Not ideal.. I mean never do this; but for testing purposes im going to put this here -->
-         var adobeDCView = new AdobeDC.View({clientId: "83dad356665b4ef493f2ba8cc93bae88", divId: "adobe-dc-view"});
-         adobeDCView.previewFile(file);
-     });                                 
-    })
+    function listenForFileUpload() {
+      var fileToRead = document.getElementById("file-picker");
+      fileToRead.addEventListener("change", function(event) {
+         var files = fileToRead.files;
+         if (files.length > 0) {
+            var reader = new FileReader();
+            reader.onloadend = function(e) {
+                var filePromise = Promise.resolve(e.target.result);
+                // Pass the filePromise and name of the file to the previewFile API
+                // adobeDCView.previewFile({
+                //      content: {promise: filePromise}
+                //      metaData: { fileName: files[0].name }
+                // })
+            };
+            reader.readAsArrayBuffer(files[0]);
+          }
+        }, false);
+    }             
+    listenForFileUpload()
  </script>
 </body>
 </html>
