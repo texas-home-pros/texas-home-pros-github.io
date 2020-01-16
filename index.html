@@ -13,10 +13,11 @@
   <script type="text/javascript">
    document.addEventListener("adobe_dc_view_sdk.ready", function()
    {
-      var adobeDCView = new AdobeDC.View({clientId: "83dad356665b4ef493f2ba8cc93bae88", divId: "adobe-dc-view"});
-      listenForFileUpload(adobeDCView)
+     listenForFileUpload()
    });
-      function listenForFileUpload(adobeDCView) {
+      function listenForFileUpload() {
+        
+        var adobeDCView = new AdobeDC.View({clientId: "83dad356665b4ef493f2ba8cc93bae88", divId: "adobe-dc-view"});                                                             
         var fileToRead = document.getElementById("file-picker");
         fileToRead.addEventListener("change", function(event) {
            var files = fileToRead.files;
